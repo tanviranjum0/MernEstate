@@ -28,7 +28,6 @@ const App = () => {
             <Route path="/listing/:id" element={<Listing />} />
             <Route path="/local-listing/:id" element={<LocalListing />} />
           </Routes>
-
           <Footer />
         </BrowserRouter>
       </div>

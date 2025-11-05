@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 export default function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const handleOnChange = (e) => {
     setFormData({
@@ -17,14 +16,17 @@ export default function SignUp() {
       `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
       {
         method: "POST",
+        withCredentials: true,
         credentials: "include",
         headers: {
+          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       }
     );
     const data = await res.json();
+    console.log(data);
     navigate("/login");
   };
 
@@ -73,7 +75,7 @@ export default function SignUp() {
           <span className="text-blue-700">Login</span>
         </Link>
       </div>
-      {error && <p className="text-red-500 mt-5">{error}</p>}
+      {/* {error && <p className="text-red-500 mt-5">{error}</p>} */}
     </div>
   );
 }

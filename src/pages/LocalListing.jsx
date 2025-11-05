@@ -7,13 +7,10 @@ import {
   FaChair,
   FaMapMarkerAlt,
   FaParking,
-  FaShare,
 } from "react-icons/fa";
 function Listing() {
-  // hello;
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const params = useParams();
   useEffect(() => {
     setLoading(true);
@@ -23,13 +20,13 @@ function Listing() {
       }
     });
     setLoading(false);
-  }, []);
+  }, [params.id]);
 
   return (
     <main>
       {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
-      {error && <p className="text-center my-7 text-2xl">{error}</p>}
-      {listing && !loading && !error && (
+      {/* {error && <p className="text-center my-7 text-2xl">{error}</p>} */}
+      {listing && !loading && (
         <div>
           <div className="h-[300px] md:h-[550px]">
             <img

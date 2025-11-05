@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export default function CreateListing() {
   const navigate = useNavigate();
-  const [file, setFiles] = useState();
   const [formData, setFormData] = useState({
     imageUrls: [],
     name: "",
