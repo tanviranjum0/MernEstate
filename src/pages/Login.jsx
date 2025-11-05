@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 const Login = () => {
+
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,8 +32,8 @@ const Login = () => {
 
       const data = await res.json();
       if (data.status == "Login successfully!") {
-        console.log("Successfully Logged In");
-        localStorage.setItem("token", data.token);
+        console.log("Successfully Logged In", data.userObject.email.split('@')[0]);
+        localStorage.setItem("user", JSON.stringify(data));
         navigate("/");
       } else if (
         data.status == "No user found .." ||

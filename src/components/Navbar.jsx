@@ -1,7 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { StoreContext } from "../context/StoreContext";
 const Navbar = () => {
+  const { user } = useContext(StoreContext)
+
   const [searchTerm, setSearchTerm] = useState("");
   const [navOpen, setNavOpen] = useState(false);
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ const Navbar = () => {
       setSearchTerm(searchTermFromUrl);
     }
   }, [location.search]);
+
   return (
     <div className="select-none">
       {navOpen ? (
@@ -86,7 +90,7 @@ const Navbar = () => {
           <div className="mx-auto w-10/12  flex justify-around items-center">
             <Link to="/" className="flex text-xl md:text-3xl">
               <b>
-                <i className="text-stone-700">RT</i>
+                <i className="text-stone-700">TanvirDev</i>
               </b>
               <p className="font-semibold">Property</p>
             </Link>
@@ -97,12 +101,13 @@ const Navbar = () => {
               <Link to={"/about"} className="mx-5 hover:underline">
                 About
               </Link>
-              <Link to={"/login"} className="mx-5 hover:underline">
-                Login
-              </Link>
-              <Link to={"/create-listing"} className="mx-5 hover:underline">
+              {user.isAlreadyLoggedIn && <Link to={"/create-listing"} className="mx-5 hover:underline">
                 Create Listing
-              </Link>
+              </Link>}
+              {!user.isAlreadyLoggedIn && <Link to={"/login"} className="mx-5 hover:underline">
+                Login
+              </Link>}
+
             </div>
             <div className="sm:flex justify-center hidden items-center">
               <form
