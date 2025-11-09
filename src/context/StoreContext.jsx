@@ -9,7 +9,7 @@ const ContextContainer = ({ children }) => {
 
   useEffect(() => {
     const checkAlreadyLoggenIn = async () => {
-      const data = await fetch("http://localhost:3010/api/auth/check-login", {
+      const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/check-login`, {
         method: "GET",
         credentials: "include",
       })
