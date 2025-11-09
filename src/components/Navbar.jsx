@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 const Navbar = () => {
-  const { user } = useContext(StoreContext)
-
+  const { isAlreadyLoggedIn } = useContext(StoreContext)
   const [searchTerm, setSearchTerm] = useState("");
   const [navOpen, setNavOpen] = useState(false);
   const navigate = useNavigate();
@@ -94,19 +93,26 @@ const Navbar = () => {
               </b>
               <p className="font-semibold">Property</p>
             </Link>
-            <div className="hidden  md:flex  justify-between">
+            <div className="hidden md:flex items-center justify-between">
               <Link to={"/"} className="mx-5 hover:underline">
                 Home
               </Link>
               <Link to={"/about"} className="mx-5 hover:underline">
                 About
               </Link>
-              {user.isAlreadyLoggedIn && <Link to={"/create-listing"} className="mx-5 hover:underline">
+
+              {!isAlreadyLoggedIn && <Link to={"/login"} className="mx-5 hover:underline">
                 Create Listing
               </Link>}
-              {!user.isAlreadyLoggedIn && <Link to={"/login"} className="mx-5 hover:underline">
+              {isAlreadyLoggedIn && <Link to={"/create-listing"} className="mx-5 hover:underline">
+                Create Listing
+              </Link>}
+              {!isAlreadyLoggedIn && <Link to={"/login"} className="mx-5 hover:underline">
                 Login
               </Link>}
+              {isAlreadyLoggedIn &&
+                <div className="cursor-pointer"><img src={`${JSON.parse(localStorage.getItem("user")).avatar}`} alt="" className="h-5 w-5 rounded-full" /></div>
+              }
 
             </div>
             <div className="sm:flex justify-center hidden items-center">

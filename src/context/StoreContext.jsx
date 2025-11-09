@@ -4,18 +4,26 @@ import { createContext, useEffect, useState } from "react";
 export const StoreContext = createContext(null);
 
 const ContextContainer = ({ children }) => {
+  const [isAlreadyLoggedIn, setIsAlreadyloggedIn] = useState(false)
 
-  const [user, setUser] = useState({
-    isAlreadyLoggedIn: false
-  })
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setUser({ ...JSON.parse(localStorage.getItem("user")), isAlreadyLoggedIn: true })
+    const checkAlreadyLoggenIn = async () => {
+      const data = await fetch("http://localhost:3010/api/auth/check-login", {
+        method: "GET",
+        credentials: "include",
+      })
+      if (data.status == 200) {
+        setIsAlreadyloggedIn(true)
+      } else {
+        setIsAlreadyloggedIn(false)
+      }
     }
+    checkAlreadyLoggenIn()
+
   }, [])
 
-  const ContextValue = { user };
+  const ContextValue = { isAlreadyLoggedIn, setIsAlreadyloggedIn };
 
   return (
     <StoreContext.Provider value={ContextValue}>

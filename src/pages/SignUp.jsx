@@ -16,10 +16,8 @@ export default function SignUp() {
       `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
       {
         method: "POST",
-        withCredentials: true,
         credentials: "include",
         headers: {
-          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
@@ -61,7 +59,9 @@ export default function SignUp() {
           className="border p-3 rounded-lg"
           id="password"
         />
-
+        <label className="pl-3 font-mono font-bold" htmlFor="file_input">Upload a profile image</label>
+        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
+         bg-gray-50 " aria-describedby="file_input_help" id="file_input" type="file" />
         <button
           type="submit"
           className="mt-5 bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"

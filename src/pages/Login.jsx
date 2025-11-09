@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { StoreContext } from "../context/StoreContext";
 
 const Login = () => {
+
+  const { setIsAlreadyloggedIn } = useContext(StoreContext)
 
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
@@ -16,6 +19,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    // console.log(formData)
     try {
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
@@ -32,7 +36,8 @@ const Login = () => {
 
       const data = await res.json();
       if (data.status == "Login successfully!") {
-        console.log("Successfully Logged In", data.userObject.email.split('@')[0]);
+        // console.log("Successfully Logged In", data.userObject.email.split('@')[0]);
+        setIsAlreadyloggedIn(true)
         localStorage.setItem("user", JSON.stringify(data));
         navigate("/");
       } else if (

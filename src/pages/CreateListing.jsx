@@ -105,49 +105,10 @@ export default function CreateListing() {
       }
     });
   };
-  // console.log(formData);
-  // const handleImageSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setImageUploadError(false);
-  //   if (file === undefined) {
-  //     setImageUploadError("You have to select at least 1 image for uploading");
-  //     return;
-  //   }
-  //   let imageData = new FormData();
-  //   setUploading(true);
-  //   file.map((image) => {
-  //     if (file[0].size > 2000000) {
-  //       setImageUploadError("Maximum 2MB image size is allowed for each image");
-  //     } else {
-  //       imageData.append("photos", image);
-  //     }
-  //   });
 
-  //   const res = await fetch(
-  //     "https://mernestatebackend-production.up.railway.app/api/listing/create-upload",
-  //     // "http://localhost:3000/api/listing/create-upload",
-  //     {
-  //       method: "POST",
-  //       credentials: "include",
-  //       headers: {
-  //         authorization: `${localStorage.getItem("token")}`,
-  //       },
-  //       body: imageData,
-  //     }
-  //   );
-  //   const result = await res.json();
-  //   if (result == "error logging in") {
-  //     setError("Please login before creating a listing");
-  //     setUploading(false);
-  //   } else {
-  //     setFormData({ ...formData, imageUrls: result });
-  //     setUploading(false);
-  //     setUploaded(true);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData?.imageUrls);
+    // console.log(formData?.imageUrls);
     if (
       formData.imageUrls.length === 0 &&
       formData.name == "" &&
@@ -166,7 +127,6 @@ export default function CreateListing() {
             method: "POST",
             credentials: "include",
             headers: {
-              authorization: `${localStorage.getItem("token")}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify(formData),
@@ -188,19 +148,7 @@ export default function CreateListing() {
       }
     }
   };
-  // const handleImageChange = async (e) => {
-  //   setUploaded(false);
-  //   const images = [];
 
-  //   if (e.target.files.length > 0 && e.target.files.length < 7) {
-  //     for (let i = 0; i < e.target.files.length; i++) {
-  //       images.push(e.target.files[i]);
-  //       setFiles(images);
-  //     }
-  //   } else {
-  //     setImageUploadError("You can only upload 6 images per listing");
-  //   }
-  // };
 
   return (
     <main className="p-3 max-w-4xl mx-auto">

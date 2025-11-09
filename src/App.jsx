@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import CreateListing from "./pages/CreateListing";
 import Test from "./pages/Test";
+import "./App.css"
 import ContextContainer from "./context/StoreContext";
 const App = () => {
   return (
