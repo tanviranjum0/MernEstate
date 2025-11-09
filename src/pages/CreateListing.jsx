@@ -81,13 +81,12 @@ export default function CreateListing() {
       if (file.size > 2000000) {
         setImageUploadError("Maximum 2MB image size is allowed for each image");
         setUploading(false);
-        setUploaded(true);
         return;
       }
 
       let form = new FormData();
       form.append("file", file);
-      form.append("upload_preset", "xubbr2hv");
+      form.append("upload_preset", `${import.meta.env.UPLOAD_PRESET}`);
       form.append("cloud_name", "tanviranjum");
       const res = await fetch(`${import.meta.env.VITE_CLOUDINARY_API}`, {
         method: "POST",

@@ -65,6 +65,11 @@ export default function Search() {
       }
       setListings(data);
       setLoading(false);
+      document.getElementById("allListingContainer").scrollIntoView({
+        behavior: 'smooth', // 'auto' (default) or 'smooth'
+        block: 'start',     // 'start' (default), 'center', 'end', or 'nearest'
+        inline: 'nearest'   // 'start', 'center', 'end', or 'nearest' (default)
+      })
     };
 
     fetchListings();
@@ -132,10 +137,16 @@ export default function Search() {
       setShowMore(false);
     }
     setListings([...listings, ...data]);
+    document.getElementById("allListingContainer").scrollIntoView({
+      behavior: 'smooth', // 'auto' (default) or 'smooth'
+      block: 'start',     // 'start' (default), 'center', 'end', or 'nearest'
+      inline: 'nearest'   // 'start', 'center', 'end', or 'nearest' (default)
+    })
+
   };
   return (
     <div className="flex mx-auto justify-center w-5/6 flex-col ">
-      <div className="p-7  md:min-h-screen">
+      <div className="p-7">
         <form
           onSubmit={handleSubmit}
           className="flex justify-center mx-auto flex-col gap-8"
@@ -238,7 +249,7 @@ export default function Search() {
           </button>
         </form>
       </div>
-      <div className="flex-1">
+      <div id="allListingContainer" className="flex-1">
         <h1 className="text-3xl pl-[5rem] font-semibold  p-3 text-slate-700 ">
           Listing results:
         </h1>
