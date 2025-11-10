@@ -8,6 +8,8 @@ import {
   FaMapMarkerAlt,
   FaParking,
 } from "react-icons/fa";
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 function Listing() {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -25,11 +27,14 @@ function Listing() {
   return (
     <main>
       {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
-      {/* {error && <p className="text-center my-7 text-2xl">{error}</p>} */}
       {listing && !loading && (
         <div>
           <div className="h-[300px] md:h-[550px]">
-            <img
+            <LazyLoadImage
+              effect="blur"
+              wrapperProps={{
+                style: { transitionDelay: "1s" },
+              }}
               src={listing.imageUrls}
               alt=""
               className="md:h-[90%] h-[70%] w-full "
@@ -84,6 +89,16 @@ function Listing() {
                 {listing.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
+            <div
+              onClick={() =>
+                alert(
+                  "As this website is for learning purposes, I've disabled the contact form. However, you can validate the other features"
+                )
+              }
+              className="py-2 cursor-pointer bg-slate-500 text-white hover:bg-slate-200 hover:text-black transition-all duration-300 rounded  px-4 border text-center text-2xl"
+            >
+              Contact Owner
+            </div>
           </div>
         </div>
       )}

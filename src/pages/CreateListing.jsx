@@ -83,12 +83,12 @@ export default function CreateListing() {
         setUploading(false);
         return;
       }
-
+      // console.log(import.meta.env.VITE_UPLOAD_PRESET, import.meta.env.VITE_CLOUDINARY_API)
       let form = new FormData();
       form.append("file", file);
-      form.append("upload_preset", `${import.meta.env.UPLOAD_PRESET}`);
+      form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
       form.append("cloud_name", "tanviranjum");
-      const res = await fetch(`${import.meta.env.VITE_CLOUDINARY_API}`, {
+      const res = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
         method: "POST",
         body: form,
       });
@@ -107,7 +107,6 @@ export default function CreateListing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData?.imageUrls);
     if (
       formData.imageUrls.length === 0 &&
       formData.name == "" &&

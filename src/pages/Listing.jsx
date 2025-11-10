@@ -139,7 +139,7 @@ export default function Listing() {
                   "As this website is for learning purposes, I've disabled the contact form. However, you can validate the other features"
                 )
               }
-              className="py-2 bg-slate-500 text-white hover:bg-slate-200 hover:text-black transition-all duration-300 rounded  px-4 border text-center text-2xl"
+              className="py-2 cursor-pointer bg-slate-500 text-white hover:bg-slate-200 hover:text-black transition-all duration-300 rounded  px-4 border text-center text-2xl"
             >
               Contact Owner
             </div>

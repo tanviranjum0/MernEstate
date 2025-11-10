@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+
 export default function LocalItem({ listing }) {
   return (
     <div className="bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full sm:w-[330px]">
       <Link to={`/local-listing/${listing._id}`}>
-        {" "}
-        <img
+        <LazyLoadImage
+          effect="blur"
+          wrapperProps={{
+            style: { transitionDelay: "0.5s" },
+          }}
           src={listing.imageUrls}
           alt="listing cover"
           loading="lazy"
