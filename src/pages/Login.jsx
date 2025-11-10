@@ -19,7 +19,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    // console.log(formData)
     try {
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
@@ -28,6 +27,7 @@ const Login = () => {
           withCredentials: true,
           credentials: "include",
           headers: {
+            "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
