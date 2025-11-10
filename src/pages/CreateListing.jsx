@@ -83,7 +83,7 @@ export default function CreateListing() {
         setUploading(false);
         return;
       }
-      // console.log(import.meta.env.VITE_UPLOAD_PRESET, import.meta.env.VITE_CLOUDINARY_API)
+      console.log(import.meta.env.VITE_UPLOAD_PRESET, import.meta.env.VITE_CLOUDINARY_API)
       let form = new FormData();
       form.append("file", file);
       form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
@@ -92,7 +92,9 @@ export default function CreateListing() {
         method: "POST",
         body: form,
       });
+
       const data = await res.json();
+      console.log(data.secure_url)
       newUrls.push(data.secure_url);
       setFormData({
         ...formData,
