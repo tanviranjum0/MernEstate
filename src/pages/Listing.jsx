@@ -27,7 +27,6 @@ export default function Listing() {
         setLoading(true);
         const res = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/api/listing/get/${params.id}`,
-          { headers: { authorization: `${localStorage.getItem("token")}` } }
         );
         const data = await res.json();
 

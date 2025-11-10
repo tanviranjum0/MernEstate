@@ -24,10 +24,10 @@ const Login = () => {
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
         {
           method: "POST",
-          withCredentials: true,
           credentials: "include",
           headers: {
             "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),

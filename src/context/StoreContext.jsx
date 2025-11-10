@@ -11,6 +11,7 @@ const ContextContainer = ({ children }) => {
     const checkAlreadyLoggenIn = async () => {
       const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/check-login`, {
         method: "GET",
+        mode: "cors",
         credentials: "include",
       })
       if (data.status == 200) {

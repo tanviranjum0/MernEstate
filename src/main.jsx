@@ -5,9 +5,7 @@ import "./index.css";
 // import ContextContainer from "./context/StoreContext.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    {/* <ContextContainer> */}
-    <App />
-    {/* </ContextContainer> */}
-  </React.StrictMode>
+  // <React.StrictMode>
+  < App />
+  // </React.StrictMode> 
 );

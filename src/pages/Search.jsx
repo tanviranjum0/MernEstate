@@ -54,7 +54,6 @@ export default function Search() {
       const searchQuery = urlParams.toString();
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/api/listing/get?${searchQuery}`,
-        { headers: { authorization: `${localStorage.getItem("token")}` } }
       );
       const data = await res.json();
 
