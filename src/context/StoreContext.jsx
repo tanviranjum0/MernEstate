@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 export const StoreContext = createContext(null);
 
 const ContextContainer = ({ children }) => {
+  const [userListings, setUserListings] = useState([])
   const [isAlreadyLoggedIn, setIsAlreadyloggedIn] = useState(false)
 
 
@@ -21,10 +22,9 @@ const ContextContainer = ({ children }) => {
       }
     }
     checkAlreadyLoggenIn()
-
   }, [])
 
-  const ContextValue = { isAlreadyLoggedIn, setIsAlreadyloggedIn };
+  const ContextValue = { isAlreadyLoggedIn, userListings, setUserListings, setIsAlreadyloggedIn };
 
   return (
     <StoreContext.Provider value={ContextValue}>

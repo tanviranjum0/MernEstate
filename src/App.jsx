@@ -12,6 +12,7 @@ import CreateListing from "./pages/CreateListing";
 import Test from "./pages/Test";
 import "./App.css"
 import ContextContainer from "./context/StoreContext";
+import Profile from "./pages/Profile";
 const App = () => {
   return (
     <>
@@ -29,6 +30,7 @@ const App = () => {
               <Route path="/search" element={<Search />} />
               <Route path="/listing/:id" element={<Listing />} />
               <Route path="/local-listing/:id" element={<LocalListing />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
             <Footer />
           </BrowserRouter>

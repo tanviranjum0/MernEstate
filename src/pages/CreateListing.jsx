@@ -64,14 +64,12 @@ export default function CreateListing() {
     if (Object.keys(f.files).length > 7) {
       setImageUploadError("You can only upload 6 images per listing");
       setUploading(false);
-      setUploaded(true);
       return;
     }
-
-    if (f.files === undefined) {
+    console.log(f.files.length);
+    if (f.files.length === 0) {
       setImageUploadError("You have to select at least 1 image for uploading");
       setUploading(false);
-      setUploaded(true);
       return;
     }
     const images = [...f.files];
@@ -94,7 +92,6 @@ export default function CreateListing() {
       });
 
       const data = await res.json();
-      // console.log(data.secure_url)
       newUrls.push(data.secure_url);
       setFormData({
         ...formData,
@@ -172,7 +169,8 @@ export default function CreateListing() {
             maxLength="62"
             minLength="10"
             required
-            onChange={handleChange}
+
+            onChange={(e) => handleChange(e)}
             value={formData.name}
           />
           <label
@@ -187,7 +185,8 @@ export default function CreateListing() {
             className="border p-3 rounded-lg"
             id="description"
             required
-            onChange={handleChange}
+
+            onChange={(e) => handleChange(e)}
             value={formData.description}
           />
           <label
@@ -202,7 +201,8 @@ export default function CreateListing() {
             className="border p-3 rounded-lg"
             id="address"
             required
-            onChange={handleChange}
+
+            onChange={(e) => handleChange(e)}
             value={formData.address}
           />
           <div className="flex my-5 text-xl px-5 md:text-2xl  gap-6 mx-auto flex-wrap">
@@ -213,7 +213,8 @@ export default function CreateListing() {
                 name="type"
                 defaultValue={"rent"}
                 className="w-5"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 checked={formData.type === "sale"}
               />
               <span>Sell</span>
@@ -225,7 +226,8 @@ export default function CreateListing() {
                 defaultValue={"rent"}
                 name="type"
                 className="w-5"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 checked={formData.type === "rent"}
               />
               <span>Rent</span>
@@ -237,7 +239,8 @@ export default function CreateListing() {
                 defaultValue={true}
                 name="parking"
                 className="w-5"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 checked={formData.parking}
               />
               <span>Parking spot</span>
@@ -249,7 +252,8 @@ export default function CreateListing() {
                 defaultValue={false}
                 id="furnished"
                 className="w-5"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 checked={formData.furnished}
               />
               <span>Furnished</span>
@@ -261,7 +265,8 @@ export default function CreateListing() {
                 id="offer"
                 name="offer"
                 className="w-5"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 checked={formData.offer}
               />
               <span>Offer</span>
@@ -277,7 +282,8 @@ export default function CreateListing() {
                 max="10"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
-                onChange={handleChange}
+
+                onChange={(e) => handleChange(e)}
                 value={formData.bedrooms}
               />
               <p>Beds</p>
@@ -291,7 +297,7 @@ export default function CreateListing() {
                 max="10"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 value={formData.bathrooms}
               />
               <p>Baths</p>
@@ -305,7 +311,7 @@ export default function CreateListing() {
                 max="10000000"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 value={formData.regularPrice}
               />
               <div className="flex flex-col items-center">
@@ -325,7 +331,8 @@ export default function CreateListing() {
                   max="10000000"
                   required
                   className="p-3 border border-gray-300 rounded-lg"
-                  onChange={handleChange}
+
+                  onChange={(e) => handleChange(e)}
                   value={formData.discountPrice}
                 />
                 <div className="flex flex-col items-center">
@@ -347,22 +354,23 @@ export default function CreateListing() {
             </span>
           </p>
           <div className="flex gap-4">
-            <input
-              // onChange={handleImageChange}
-              id="image-input"
-              className="p-3 file:bg-red-200 border bg-violet-100  border-slate-900 rounded-xl w-full"
-              type="file"
-              accept="image/*"
-              multiple
-              placeholder="Select Image"
-            />
-            <button
-              disabled={uploading}
-              className="p-3 active:scale-95 hover:scale-[1.01] text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
-              onClick={handleImageSubmit}
-            >
-              {uploaded ? "Uploaded" : uploading ? "Uploading..." : "Upload"}
-            </button>
+            <form className="flex w-full">
+              <input
+                id="image-input"
+                className="p-3 file:bg-red-200 border bg-violet-100  border-slate-900 rounded-xl w-full"
+                type="file"
+                accept="image/*"
+                multiple
+                placeholder="Select Image"
+              />
+              <button
+                disabled={uploading}
+                className="p-3 active:scale-95 hover:scale-[1.01] text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+                onClick={(e) => handleImageSubmit(e)}
+              >
+                {uploaded ? "Uploaded" : uploading ? "Uploading..." : "Upload"}
+              </button>
+            </form>
           </div>
           <p className="pl-2 text-red-700 text-sm">
             {imageUploadError && imageUploadError}
@@ -370,8 +378,7 @@ export default function CreateListing() {
 
           <button
             disabled={loading || uploading || !uploaded}
-            type="submit"
-            onClick={handleSubmit}
+            onClick={(e) => handleSubmit(e)}
             className="transition-all disabled:bg-slate-600 active:scale-95  hover:scale-[1.01] hover:shadow-xl duration-300 p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
             {loading ? "Uploading..." : "Upload New Listing"}

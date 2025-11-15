@@ -111,7 +111,7 @@ const Navbar = () => {
                 Login
               </Link>}
               {isAlreadyLoggedIn &&
-                <div className="cursor-pointer"><img src={`${JSON.parse(localStorage.getItem("user")).avatar}`} alt="" className="h-5 w-5 rounded-full" /></div>
+                <Link to={"/profile"} className="cursor-pointer"><img src={`${JSON.parse(localStorage?.getItem("user"))?.avatar}`} alt="" className="h-5 w-5 object-cover rounded-full" /></Link>
               }
 
             </div>

@@ -137,9 +137,9 @@ export default function Search() {
     }
     setListings([...listings, ...data]);
     document.getElementById("allListingContainer").scrollIntoView({
-      behavior: 'smooth', // 'auto' (default) or 'smooth'
-      block: 'start',     // 'start' (default), 'center', 'end', or 'nearest'
-      inline: 'nearest'   // 'start', 'center', 'end', or 'nearest' (default)
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'end'
     })
 
   };

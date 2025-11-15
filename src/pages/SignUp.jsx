@@ -1,16 +1,53 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 export default function SignUp() {
-  const [formData, setFormData] = useState({});
+
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   const navigate = useNavigate();
-  const handleOnChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
+
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+    setLoading(true)
+    setError("")
+    const username = document.getElementById("username").value
+    const email = document.getElementById("email").value
+    const password = document.getElementById("password").value
+    const image = document.getElementById("file_input").files[0]
+    if (!username | !email | !password | !image) {
+      setLoading(false)
+
+      return setError("All input fields are required...")
+    }
+    if (!validateEmail(email)) {
+      setLoading(false)
+      return setError("Please provide a valid email address")
+    }
+
+    const isExistingUser = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/${email}`)
+    const existed = await isExistingUser.json()
+    if (!existed.data) {
+      setLoading(false)
+      return setError("This email is already exists...")
+    }
+
+    let form = new FormData();
+    form.append("file", image);
+    form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+    form.append("cloud_name", "tanviranjum");
+    let imageRes = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
+      method: "POST",
+      body: form,
+    });
+
+    const ImageData = await imageRes.json();
 
     const res = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
@@ -21,18 +58,29 @@ export default function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          avatar: ImageData.secure_url
+        }),
       }
     );
     const data = await res.json();
-    console.log(data);
+    if (data == "This email is already exist...") {
+      setLoading(false)
+
+      return setError(data);
+    }
+    setLoading(false)
+
     navigate("/login");
   };
 
   return (
     <div className="p-3 max-w-lg mx-auto pb-40">
       <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-2">
         <label className="pl-3 font-mono font-bold" htmlFor="username">
           Username :{" "}
         </label>
@@ -40,13 +88,11 @@ export default function SignUp() {
           type="text"
           className="border p-3 rounded-lg"
           id="username"
-          onChange={handleOnChange}
         />
         <label className="pl-3 font-mono font-bold" htmlFor="Email">
           Email :{" "}
         </label>
         <input
-          onChange={handleOnChange}
           type="email"
           className="border p-3 rounded-lg"
           id="email"
@@ -55,7 +101,6 @@ export default function SignUp() {
           Password :{" "}
         </label>
         <input
-          onChange={handleOnChange}
           type="password"
           className="border p-3 rounded-lg"
           id="password"
@@ -64,19 +109,21 @@ export default function SignUp() {
         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer
          bg-gray-50 " aria-describedby="file_input_help" id="file_input" type="file" />
         <button
+          onClick={(e) => handleSubmit(e)}
           type="submit"
           className="mt-5 bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          Sign Up
+          {loading && "Please Wait.."}
+          {!loading && "Sign Up"}
         </button>
       </form>
+      {error && <div className="text-red-700">{error}</div>}
       <div className="pl-2 flex gap-2 mt-5">
         <p>Already have an account?</p>
         <Link to={"/login"}>
           <span className="text-blue-700">Login</span>
         </Link>
       </div>
-      {/* {error && <p className="text-red-500 mt-5">{error}</p>} */}
     </div>
   );
 }
