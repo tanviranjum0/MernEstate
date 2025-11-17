@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreateListing() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    imageUrls: [],
+
     name: "",
     description: "",
     address: "",
@@ -85,14 +85,14 @@ export default function CreateListing() {
       let form = new FormData();
       form.append("file", file);
       form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
-      form.append("cloud_name", "tanviranjum");
+      form.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
       const res = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
         method: "POST",
         body: form,
       });
 
       const data = await res.json();
-      newUrls.push(data.secure_url);
+      newUrls.push(data);
       setFormData({
         ...formData,
         imageUrls: newUrls,
@@ -106,45 +106,84 @@ export default function CreateListing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newUrls = []
+    setImageUploadError("");
+    setLoading(true);
+    setError("");
+
     if (
-      formData.imageUrls.length === 0 &&
       formData.name == "" &&
       formData.address == "" &&
       formData.description == ""
     ) {
       setError("All fields are required");
       return;
-    } else {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/api/listing/create`,
-          {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          }
-        );
-        const data = await res.json();
+    }
 
-        setLoading(false);
-        if (data == "error logging in") {
-          setError("Please login before creating a listing");
-        } else if (data.success === false) {
-          setError(data.message);
-        } else {
-          navigate(`/listing/${data._id}`);
+    const f = document.getElementById("image-input");
+    if (Object.keys(f.files).length > 7) {
+      setImageUploadError("You can only upload 6 images per listing");
+      return;
+    }
+    console.log(f.files.length);
+    if (f.files.length === 0) {
+      setImageUploadError("You have to select at least 1 image for uploading");
+      return;
+    }
+    const images = [...f.files];
+
+    images.forEach(async (file, index) => {
+      console.log(index, images.length)
+      if (file.size > 2000000) {
+        setImageUploadError("Maximum 2MB image size is allowed for each image");
+        return;
+      }
+      let form = new FormData();
+      form.append("file", file);
+      form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
+      form.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
+      const res = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+      newUrls.push(data)
+      // setFormData({
+      //   ...formData,
+      //   imageUrls: newUrls
+      // });
+      console.log(formData)
+      if (index + 1 === images.length) return createListing()
+    });
+
+    async function createListing() {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/listing/create`,
+        {
+          method: "POST",
+          mode: "cors",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...formData, imageUrls: newUrls }),
         }
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
+      );
+      const data = await res.json();
+
+      setLoading(false);
+      if (data == "error logging in") {
+        setError("Please login before creating a listing");
+      } else if (data.success === false) {
+        setError(data.message);
       }
     }
+    // } else {
+    //   // navigate(`/listing/${data._id}`);
+    // }
+
+
   };
 
 
@@ -377,7 +416,7 @@ export default function CreateListing() {
           </p>
 
           <button
-            disabled={loading || uploading || !uploaded}
+            // disabled={loading || uploading || !uploaded}
             onClick={(e) => handleSubmit(e)}
             className="transition-all disabled:bg-slate-600 active:scale-95  hover:scale-[1.01] hover:shadow-xl duration-300 p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >

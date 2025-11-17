@@ -41,7 +41,7 @@ export default function SignUp() {
     let form = new FormData();
     form.append("file", image);
     form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
-    form.append("cloud_name", "tanviranjum");
+    form.append("cloud_name", import.meta.env.VITE_CLOUD_NAME)
     let imageRes = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
       method: "POST",
       body: form,
@@ -62,7 +62,7 @@ export default function SignUp() {
           username,
           email,
           password,
-          avatar: ImageData.secure_url
+          avatar: ImageData
         }),
       }
     );
@@ -73,7 +73,7 @@ export default function SignUp() {
       return setError(data);
     }
     setLoading(false)
-
+    if (res.status == 400) return setError(data);
     navigate("/login");
   };
 

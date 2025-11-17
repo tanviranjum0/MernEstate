@@ -151,7 +151,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="flex justify-between my-10">
-                <div className="flex items-center justify-center object-cover flex-col select-none"><img src={`${user.avatar}`} alt="" className="h-40 object-cover w-40 rounded-lg" />
+                <div className="flex items-center justify-center object-cover flex-col select-none"><img src={`${user.avatar.secure_url}`} alt="" className="h-40 object-cover w-40 rounded-lg" />
 
                 </div>
                 <div className="p-5 flex flex-col items-center justify-center">
@@ -177,7 +177,7 @@ const Profile = () => {
                 {userListings && userListings.data && userListings.data.map((listing) => {
                     return (
                         <div key={listing._id} className="p-3 gap-3 cursor-pointer items-center bg-gray-300 border flex justify-between">
-                            <img src={listing.imageUrls[0]} alt="" className="h-10 object-cover w-16" />
+                            <img src={listing.imageUrls[0].secure_url} alt="" className="h-10 object-cover w-16" />
                             <Link to={`/listing/${listing._id}`} className="leading-tight hover:text-blue-800">
                                 <div className="text-center">{listing.name}</div>
                                 <div className="text-center">{listing.description}</div>

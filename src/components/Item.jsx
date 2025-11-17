@@ -14,7 +14,7 @@ export default function ListingItem({ listing }) {
           wrapperProps={{
             style: { transitionDelay: "1s" },
           }}
-          src={listing.imageUrls[0]}
+          src={listing.imageUrls[0].secure_url}
           alt="listing cover"
           className="h-[320px] sm:h-[220px] w-full object-cover hover:scale-105 transition-scale duration-300"
         />
