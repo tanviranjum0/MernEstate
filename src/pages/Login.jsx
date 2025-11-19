@@ -18,6 +18,7 @@ const Login = () => {
     setError("");
     const email = document.getElementById("loginEmail").value
     const password = document.getElementById("loginPassword").value
+    console.log(email, password)
     if (!email | !password) {
       return setError("All input fields are require...")
     }
