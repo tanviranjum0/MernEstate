@@ -13,11 +13,13 @@ import Test from "./pages/Test";
 import "./App.css"
 import ContextContainer from "./context/StoreContext";
 import Profile from "./pages/Profile";
+import EditListing from "./pages/EditListing";
 const App = () => {
+
   return (
     <>
       <ContextContainer>
-        <div className="bg-[#a2b8dbb6] scroll-smooth">
+        <div className="bg-[#a2b8dbb6]  transition-all duration-300 scroll-smooth">
           <BrowserRouter>
             <Navbar />
             <Routes>
@@ -30,7 +32,8 @@ const App = () => {
               <Route path="/search" element={<Search />} />
               <Route path="/listing/:id" element={<Listing />} />
               <Route path="/local-listing/:id" element={<LocalListing />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/edit-listing/:id" element={<EditListing />} />
             </Routes>
             <Footer />
           </BrowserRouter>

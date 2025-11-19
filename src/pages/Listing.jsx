@@ -44,7 +44,7 @@ export default function Listing() {
       }
     };
     fetchListing();
-  }, [params.id]);
+  }, [params]);
 
   return (
     <main>
@@ -56,7 +56,6 @@ export default function Listing() {
         <div>
           <Swiper navigation>
             {listing.imageUrls.map((url) => {
-              console.log(url.secure_url)
               return (
                 <SwiperSlide key={url.secure_url}>
                   <div

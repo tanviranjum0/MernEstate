@@ -23,7 +23,6 @@ export default function SignUp() {
     const image = document.getElementById("file_input").files[0]
     if (!username | !email | !password | !image) {
       setLoading(false)
-
       return setError("All input fields are required...")
     }
     if (!validateEmail(email)) {
@@ -69,7 +68,6 @@ export default function SignUp() {
     const data = await res.json();
     if (data == "This email is already exist...") {
       setLoading(false)
-
       return setError(data);
     }
     setLoading(false)
@@ -111,9 +109,10 @@ export default function SignUp() {
         <button
           onClick={(e) => handleSubmit(e)}
           type="submit"
+          disabled={loading}
           className="mt-5 bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
         >
-          {loading && "Please Wait.."}
+          {loading && "Please Wait..."}
           {!loading && "Sign Up"}
         </button>
       </form>

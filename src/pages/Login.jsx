@@ -43,7 +43,6 @@ const Login = () => {
       );
 
       const data = await res.json();
-      console.log(data)
       if (data.status == "Login successfully!") {
         setIsAlreadyloggedIn(true)
         localStorage.setItem("user", JSON.stringify(data));

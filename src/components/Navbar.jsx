@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 const Navbar = () => {
+  const user = JSON.parse(localStorage?.getItem("user"))
   const { isAlreadyLoggedIn } = useContext(StoreContext)
   const [searchTerm, setSearchTerm] = useState("");
   const [navOpen, setNavOpen] = useState(false);
@@ -26,7 +27,7 @@ const Navbar = () => {
     if (searchTermFromUrl) {
       setSearchTerm(searchTermFromUrl);
     }
-  }, [location.search]);
+  }, []);
 
   return (
     <div className="select-none">
@@ -111,7 +112,7 @@ const Navbar = () => {
                 Login
               </Link>}
               {isAlreadyLoggedIn &&
-                <Link to={"/profile"} className="cursor-pointer"><img src={`${JSON.parse(localStorage?.getItem("user"))?.avatar.secure_url}`} alt="" className="h-5 w-5 object-cover rounded-full" /></Link>
+                <Link to={`/profile/${user?.userObject.id}`} className="cursor-pointer"><img src={`${user?.avatar.secure_url}`} alt="" className="h-5 w-5 object-cover rounded-full" /></Link>
               }
 
             </div>

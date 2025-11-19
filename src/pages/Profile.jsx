@@ -1,19 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from "react";
 import { RiListSettingsLine } from "react-icons/ri";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { StoreContext } from "../context/StoreContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
+    const navigate = useNavigate()
     const [more, setMore] = useState(true)
     const [error, setError] = useState("")
+    const [logOutLoading, setLogOutLoading] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+    const [listingDeleteLoading, setListingDeleteLoading] = useState(false)
     const user = JSON.parse(localStorage.getItem("user"))
 
     const { userListings, setUserListings } = useContext(StoreContext)
     useEffect(() => {
         if (!user) return window.location.href = "/"
-        console.log(user)
-
         async function getListings() {
             const listings = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/user-listings/${user.userObject.id}`, {
                 method: "GET",
@@ -25,7 +28,6 @@ const Profile = () => {
                 setMore(false);
             }
             setUserListings({ data, progress: data.length })
-            console.log(data)
         }
         getListings()
     }, [])
@@ -40,7 +42,6 @@ const Profile = () => {
             credentials: "include",
         })
         const data = await res.json();
-        // console.log(data.length);
         if (data.length < 10) {
             setMore(false);
         }
@@ -53,6 +54,7 @@ const Profile = () => {
 
     };
     const handleSignOut = async () => {
+        setLogOutLoading(true)
         document
             .getElementById("confirmLogOutBox")
             .classList.toggle("hidden");
@@ -64,11 +66,11 @@ const Profile = () => {
             localStorage.clear()
             window.location.href = "/"
         }
-
-        console.log(logOut)
+        setLogOutLoading(false)
     }
 
     const handleAccountDelete = async () => {
+        setDeleteLoading(true)
         document
             .getElementById("confirmDeleteAccountBox")
             .classList.toggle("hidden");
@@ -81,12 +83,13 @@ const Profile = () => {
             localStorage.clear()
             window.location.href = "/"
         }
+        setDeleteLoading(false)
 
-        console.log(data)
     }
 
     const handleDeleteListing = async (e) => {
         e.preventDefault()
+        setListingDeleteLoading(true)
         const listingId = JSON.parse(localStorage.getItem("ListingToBeDeleted"));
 
         const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/listing/delete/${listingId}`, {
@@ -95,7 +98,6 @@ const Profile = () => {
             credentials: "include"
         })
         const res = await data.json()
-        console.log(res)
         document
             .getElementById("confirmListingDeleteBox")
             .classList.toggle("hidden");
@@ -105,6 +107,7 @@ const Profile = () => {
             const updatedListings = userListings.data.filter((listing) => listing._id !== listingId);
             setUserListings({ data: updatedListings, progress: updatedListings.length });
         }
+        setListingDeleteLoading(false)
     }
     return (
         <div className='w-[70vw] mx-auto'>
@@ -114,11 +117,12 @@ const Profile = () => {
                         <div className="font-semibold text-xl ">Are you sure, you want to log out?</div>
                         <div className="flex justify-end gap-5 ">
                             <div onClick={() => {
+                                setLogOutLoading(false);
                                 document
                                     .getElementById("confirmLogOutBox")
                                     .classList.toggle("hidden");
-                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-400 cursor-pointer  bg-green-300 border rounded">No</div>
-                            <div onClick={() => handleSignOut()} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-400 cursor-pointer bg-red-300 border rounded">Yes</div></div>
+                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-600 cursor-pointer  bg-green-500  border rounded">No</div>
+                            <div onClick={() => handleSignOut()} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-600 cursor-pointer bg-red-500  border rounded">{logOutLoading ? "Logging Out..." : "Yes"}</div></div>
                     </div>
                 </div>
             </div>
@@ -131,8 +135,8 @@ const Profile = () => {
                                 document
                                     .getElementById("confirmDeleteAccountBox")
                                     .classList.toggle("hidden");
-                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-400 cursor-pointer  bg-green-300 border rounded">No</div>
-                            <div onClick={() => handleAccountDelete()} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-400 cursor-pointer bg-red-300 border rounded">Yes</div></div>
+                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-600 cursor-pointer  bg-green-500 border rounded">No</div>
+                            <div onClick={() => handleAccountDelete()} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-600 cursor-pointer bg-red-500  border rounded">{deleteLoading ? "Deleting..." : "Yes"}</div></div>
                     </div>
                 </div>
             </div>
@@ -145,8 +149,8 @@ const Profile = () => {
                                 document
                                     .getElementById("confirmListingDeleteBox")
                                     .classList.toggle("hidden");
-                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-400 cursor-pointer  bg-green-300 border rounded">No</div>
-                            <div onClick={(e) => handleDeleteListing(e)} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-400 cursor-pointer bg-red-300 border rounded">Yes</div></div>
+                            }} className="px-3 py-1.5 font-semibold text-2xl hover:bg-green-600 cursor-pointer  bg-green-500 border rounded">No</div>
+                            <div onClick={(e) => handleDeleteListing(e)} className="px-3 py-1.5 font-semibold text-2xl hover:bg-red-600 cursor-pointer bg-red-500 border rounded">{listingDeleteLoading ? "Deleting..." : "Yes"}</div></div>
                     </div>
                 </div>
             </div>
@@ -184,7 +188,11 @@ const Profile = () => {
                                 <div className="text-center text-sm">{new Date(listing.updatedAt).toUTCString()}</div>
                             </Link>
                             <div className="flex justify-center items-center gap-5">
-                                <div><RiListSettingsLine className="h-10 w-10 p-1 hover:border-2 border-black" /></div>
+                                <div onClick={() => {
+                                    localStorage.setItem("ListingToBeEdited", JSON.stringify(listing))
+                                    navigate(`/edit-listing/${listing._id}`)
+
+                                }}><RiListSettingsLine className="h-10 w-10 p-1 hover:border-2 border-black" /></div>
                                 <div onClick={() => {
                                     localStorage.setItem("ListingToBeDeleted", JSON.stringify(listing._id))
                                     document

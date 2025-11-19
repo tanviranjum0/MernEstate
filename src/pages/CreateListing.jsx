@@ -18,10 +18,8 @@ export default function CreateListing() {
   });
 
   const [imageUploadError, setImageUploadError] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
 
   const [contact, setContact] = useState("");
   const handleChange = (e) => {
@@ -55,54 +53,7 @@ export default function CreateListing() {
     }
   };
 
-  const handleImageSubmit = async (e) => {
-    e.preventDefault();
-    setImageUploadError("");
-    setUploading(true);
-    setUploaded(false);
-    const f = document.getElementById("image-input");
-    if (Object.keys(f.files).length > 7) {
-      setImageUploadError("You can only upload 6 images per listing");
-      setUploading(false);
-      return;
-    }
-    console.log(f.files.length);
-    if (f.files.length === 0) {
-      setImageUploadError("You have to select at least 1 image for uploading");
-      setUploading(false);
-      return;
-    }
-    const images = [...f.files];
-    var newUrls = [];
 
-    images.forEach(async (file) => {
-      if (file.size > 2000000) {
-        setImageUploadError("Maximum 2MB image size is allowed for each image");
-        setUploading(false);
-        return;
-      }
-      // console.log(import.meta.env.VITE_UPLOAD_PRESET, import.meta.env.VITE_CLOUDINARY_API)
-      let form = new FormData();
-      form.append("file", file);
-      form.append("upload_preset", import.meta.env.VITE_UPLOAD_PRESET);
-      form.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
-      const res = await fetch(import.meta.env.VITE_CLOUDINARY_API, {
-        method: "POST",
-        body: form,
-      });
-
-      const data = await res.json();
-      newUrls.push(data);
-      setFormData({
-        ...formData,
-        imageUrls: newUrls,
-      });
-      if (images.length == newUrls.length) {
-        setUploading(false);
-        setUploaded(true);
-      }
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,7 +76,6 @@ export default function CreateListing() {
       setImageUploadError("You can only upload 6 images per listing");
       return;
     }
-    console.log(f.files.length);
     if (f.files.length === 0) {
       setImageUploadError("You have to select at least 1 image for uploading");
       return;
@@ -133,7 +83,6 @@ export default function CreateListing() {
     const images = [...f.files];
 
     images.forEach(async (file, index) => {
-      console.log(index, images.length)
       if (file.size > 2000000) {
         setImageUploadError("Maximum 2MB image size is allowed for each image");
         return;
@@ -149,11 +98,7 @@ export default function CreateListing() {
 
       const data = await res.json();
       newUrls.push(data)
-      // setFormData({
-      //   ...formData,
-      //   imageUrls: newUrls
-      // });
-      console.log(formData)
+
       if (index + 1 === images.length) return createListing()
     });
 
@@ -177,13 +122,10 @@ export default function CreateListing() {
         setError("Please login before creating a listing");
       } else if (data.success === false) {
         setError(data.message);
+      } else {
+        navigate(`/listing/${data._id}`);
       }
     }
-    // } else {
-    //   // navigate(`/listing/${data._id}`);
-    // }
-
-
   };
 
 
@@ -402,13 +344,7 @@ export default function CreateListing() {
                 multiple
                 placeholder="Select Image"
               />
-              <button
-                disabled={uploading}
-                className="p-3 active:scale-95 hover:scale-[1.01] text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
-                onClick={(e) => handleImageSubmit(e)}
-              >
-                {uploaded ? "Uploaded" : uploading ? "Uploading..." : "Upload"}
-              </button>
+
             </form>
           </div>
           <p className="pl-2 text-red-700 text-sm">
@@ -416,7 +352,7 @@ export default function CreateListing() {
           </p>
 
           <button
-            // disabled={loading || uploading || !uploaded}
+            disabled={loading}
             onClick={(e) => handleSubmit(e)}
             className="transition-all disabled:bg-slate-600 active:scale-95  hover:scale-[1.01] hover:shadow-xl duration-300 p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
