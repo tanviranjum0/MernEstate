@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom"
 
 const EditListing = () => {
     const listing = JSON.parse(localStorage.getItem("ListingToBeEdited"))
-
-    console.log(listing)
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         imageUrls: listing.imageUrls,
@@ -77,7 +75,6 @@ const EditListing = () => {
         }
 
         const f = document.getElementById("image-input");
-        console.log(f.files)
         if (Object.keys(f.files).length > 7) {
             setImageUploadError("You can only upload 6 images per listing");
             return;
@@ -113,8 +110,6 @@ const EditListing = () => {
         }
 
         async function updateListing() {
-            console.log("New Urls: ", newUrls)
-            console.log("Form Data Urls: ", formData.imageUrls)
             const res = await fetch(
                 `${import.meta.env.VITE_BACKEND_URL}/api/listing/update/${listing._id}`,
                 {
