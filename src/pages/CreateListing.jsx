@@ -67,16 +67,22 @@ export default function CreateListing() {
       formData.address == "" &&
       formData.description == ""
     ) {
+      setLoading(false);
+
       setError("All fields are required");
       return;
     }
 
     const f = document.getElementById("image-input");
     if (Object.keys(f.files).length > 7) {
+      setLoading(false);
+
       setImageUploadError("You can only upload 6 images per listing");
       return;
     }
     if (f.files.length === 0) {
+      setLoading(false);
+
       setImageUploadError("You have to select at least 1 image for uploading");
       return;
     }
@@ -84,6 +90,8 @@ export default function CreateListing() {
 
     images.forEach(async (file, index) => {
       if (file.size > 2000000) {
+        setLoading(false);
+
         setImageUploadError("Maximum 2MB image size is allowed for each image");
         return;
       }
@@ -119,10 +127,16 @@ export default function CreateListing() {
 
       setLoading(false);
       if (data == "error logging in") {
+        setLoading(false);
+
         setError("Please login before creating a listing");
       } else if (data.success === false) {
+        setLoading(false);
+
         setError(data.message);
       } else {
+        setLoading(false);
+
         navigate(`/listing/${data._id}`);
       }
     }
