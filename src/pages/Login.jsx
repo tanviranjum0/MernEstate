@@ -4,7 +4,7 @@ import { StoreContext } from "../context/StoreContext";
 
 const Login = () => {
 
-  const { setIsAlreadyloggedIn } = useContext(StoreContext)
+  const { setIsAlreadyLoggedIn } = useContext(StoreContext)
 
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Login = () => {
 
       const data = await res.json();
       if (data.status == "Login successfully!") {
-        setIsAlreadyloggedIn(true)
+        setIsAlreadyLoggedIn(true)
         localStorage.setItem("user", JSON.stringify(data));
         navigate("/");
       } else if (
