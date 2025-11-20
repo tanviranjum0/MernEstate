@@ -5,33 +5,30 @@ export const StoreContext = createContext(null);
 
 const ContextContainer = ({ children }) => {
   const [userListings, setUserListings] = useState([])
-  const [isAlreadyLoggedIn, setIsAlreadyloggedIn] = useState(false)
+  const [isAlreadyLoggedIn, setIsAlreadyLoggedIn] = useState(false)
 
-
-  useEffect(() => {
-    const checkAlreadyLoggenIn = async () => {
-      if (!localStorage.getItem("user")) {
-        setIsAlreadyloggedIn(false)
-        return
-      }
-      const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/check-login`, {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-      })
-      const stays = await data.json()
-      console.log(stays)
-      if (data.status == 200) {
-        setIsAlreadyloggedIn(true)
-      } else {
-        setIsAlreadyloggedIn(false)
-      }
-
+  const checkAlreadyLoggenIn = async () => {
+    if (!localStorage.getItem("user")) {
+      setIsAlreadyLoggedIn(false)
+      return
     }
+    const data = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/check-login`, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+    })
+    if (data.status == 200) {
+      setIsAlreadyLoggedIn(true)
+    } else {
+      setIsAlreadyLoggedIn(false)
+    }
+
+  }
+  useEffect(() => {
     checkAlreadyLoggenIn()
   }, [])
 
-  const ContextValue = { isAlreadyLoggedIn, userListings, setUserListings, setIsAlreadyloggedIn };
+  const ContextValue = { isAlreadyLoggedIn, userListings, setUserListings, setIsAlreadyLoggedIn };
 
   return (
     <StoreContext.Provider value={ContextValue}>

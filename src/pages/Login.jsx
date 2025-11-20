@@ -18,7 +18,6 @@ const Login = () => {
     setError("");
     const email = document.getElementById("loginEmail").value
     const password = document.getElementById("loginPassword").value
-    console.log(email, password)
     if (!email | !password) {
       return setError("All input fields are require...")
     }
@@ -43,7 +42,6 @@ const Login = () => {
       );
 
       const data = await res.json();
-      console.log(data)
       if (data.status == "Login successfully!") {
         setIsAlreadyloggedIn(true)
         localStorage.setItem("user", JSON.stringify(data));

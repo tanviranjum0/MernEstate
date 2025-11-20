@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 const Navbar = () => {
   const user = JSON.parse(localStorage?.getItem("user"))
-  // console.log(user)
   const { isAlreadyLoggedIn } = useContext(StoreContext)
   const [searchTerm, setSearchTerm] = useState("");
   const [navOpen, setNavOpen] = useState(false);
