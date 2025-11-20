@@ -14,7 +14,7 @@ const Profile = () => {
     const [listingDeleteLoading, setListingDeleteLoading] = useState(false)
     const user = JSON.parse(localStorage.getItem("user"))
 
-    const { userListings, setUserListings } = useContext(StoreContext)
+    const { userListings, setUserListings, setInitialListings } = useContext(StoreContext)
     useEffect(() => {
         if (!user) return window.location.href = "/"
         async function getListings() {
@@ -27,6 +27,7 @@ const Profile = () => {
             if (data.length < 10) {
                 setMore(false);
             }
+            setInitialListings(data)
             setUserListings({ data, progress: data.length })
         }
         getListings()
@@ -45,6 +46,7 @@ const Profile = () => {
         if (data.length < 10) {
             setMore(false);
         }
+        setInitialListings(data)
         setUserListings({ data, progress: userListings.progress + data.length });
         document.getElementById("userListingContainer").scrollIntoView({
             behavior: 'smooth',
@@ -156,7 +158,6 @@ const Profile = () => {
             </div>
             <div className="flex justify-between my-10">
                 <div className="flex items-center justify-center object-cover flex-col select-none"><img src={`${user.avatar.secure_url}`} alt="" className="h-40 object-cover w-40 rounded-lg" />
-
                 </div>
                 <div className="p-5 flex flex-col items-center justify-center">
                     <div className='uppercase text-2xl'>{user.userObject.name}</div>

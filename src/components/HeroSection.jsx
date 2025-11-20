@@ -1,11 +1,14 @@
 import "swiper/css/bundle";
-import { listings } from "../assets/listings";
-import LocalItem from "./LocalItem";
+import Item from "./Item";
+import { useContext } from "react";
+import { StoreContext } from "../context/StoreContext";
 
 const HeroSection = () => {
+  const { initialListings } = useContext(StoreContext)
+
   let rentItems = [];
   let saleItems = [];
-  listings.map((item) => {
+  initialListings.map((item) => {
     if (item.type === "sale") {
       saleItems.push(item);
     } else if (item.type === "rent") {
@@ -23,10 +26,10 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="w-10/12 mx-auto p-5 ">
-          {listings && listings.length > 0 && (
+          {saleItems && saleItems.length > 0 && (
             <div className="flex flex-wrap justify-center p-3  gap-4">
               {saleItems.map((listing) => (
-                <LocalItem listing={listing} key={listing._id} />
+                <Item listing={listing} key={listing._id} />
               ))}
             </div>
           )}
@@ -40,10 +43,10 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="w-10/12 mx-auto p-5 ">
-          {listings && rentItems.length > 0 && (
+          {rentItems && rentItems.length > 0 && (
             <div className="flex flex-wrap justify-center p-3  gap-4">
               {rentItems.map((listing) => (
-                <LocalItem listing={listing} key={listing._id} />
+                <Item listing={listing} key={listing._id} />
               ))}
             </div>
           )}
